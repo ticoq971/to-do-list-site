@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskFlow — Gestion de tâches</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS — hosted locally in this project (no external CDN call at runtime) -->
+    <script src="vendor/tailwind-cdn.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+            colors: {
+              accent: { 50: '#eef2ff', 100: '#e0e7ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- React + ReactDOM — hosted locally in this project (no external CDN call at runtime) -->
+    <script src="vendor/react.production.min.js"></script>
+    <script src="vendor/react-dom.production.min.js"></script>
+
+    <!-- Babel standalone, hosted locally, lets the browser run JSX directly (no build step) -->
+    <script src="vendor/babel.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Visible failure fallback: if anything above fails to load or throws before React
+         mounts, show a readable message instead of a silent blank page. -->
+    <script>
+      window.addEventListener('error', function (e) {
+        showBootError((e && e.message) || 'Erreur inconnue au chargement.');
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        showBootError((e && e.reason && e.reason.message) || 'Erreur de promesse non gérée.');
+      });
+      function showBootError(msg) {
+        var root = document.getElementById('root');
+        if (!root || root.getAttribute('data-mounted') === 'true') return;
+        root.innerHTML =
+          '<div style="font-family: sans-serif; max-width: 640px; margin: 80px auto; padding: 24px; ' +
+          'border: 1px solid #fecaca; background: #fff1f2; border-radius: 12px; color: #991b1b;">' +
+          '<h1 style="margin:0 0 8px;font-size:18px;">TaskFlow n\'a pas pu démarrer</h1>' +
+          '<p style="margin:0 0 8px;font-size:14px;">Détail technique : ' +
+          String(msg).replace(/</g, '&lt;') +
+          '</p>' +
+          '<p style="margin:0;font-size:13px;color:#7f1d1d;">Essayez de vider le cache du navigateur puis de recharger la page.</p>' +
+          '</div>';
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <div id="boot-loading">Chargement de TaskFlow…</div>
+    </div>
+
+    <!-- Application source, transpiled live in the browser by Babel (type=text/babel) -->
+    <script type="text/babel" data-presets="react" src="js/utils.js"></script>
+    <script type="text/babel" data-presets="react" src="js/store.js"></script>
+    <script type="text/babel" data-presets="react" src="js/components.js"></script>
+    <script type="text/babel" data-presets="react" src="js/pages.js"></script>
+    <script type="text/babel" data-presets="react" src="js/app.js"></script>
+  </body>
+</html>
