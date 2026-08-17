@@ -649,6 +649,7 @@ function TaskTree({ tasks, showProject, onOpenTask, onAddSubtask, selectedId, on
 /* ---------------------- Sidebar ---------------------- */
 
 const NAV_ITEMS = [
+  { to: 'menu', icon: '🎮', label: 'Menu' },
   { to: 'dashboard', icon: '🏠', label: 'Tableau de bord' },
   { to: 'today', icon: '📅', label: "Aujourd'hui" },
   { to: 'upcoming', icon: '📆', label: 'À venir' },
@@ -658,8 +659,39 @@ const NAV_ITEMS = [
 ];
 
 function Sidebar({ route, navigate, onNavigate }) {
-  const { state } = useTaskStore();
+  const { state, importData } = useTaskStore();
   const [showModal, setShowModal] = useState(false);
+  const importRef = useRef(null);
+
+  function exportNow() {
+    const blob = new Blob([JSON.stringify({ projects: state.projects, tasks: state.tasks }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `taskflow-export-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function onImportFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        if (!Array.isArray(parsed.projects) || !Array.isArray(parsed.tasks)) throw new Error('invalid');
+        const merge = confirm('OK = fusionner avec les données actuelles.\nAnnuler = remplacer toutes les données.');
+        importData(parsed, merge);
+      } catch (err) {
+        alert('Fichier JSON invalide');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
 
   const activeProjects = state.projects.filter((p) => !p.archived);
 
@@ -722,6 +754,14 @@ function Sidebar({ route, navigate, onNavigate }) {
         })}
       </div>
 
+      <div className="border-t border-slate-200 p-3 dark:border-slate-800">
+        <input ref={importRef} type="file" accept="application/json,.json" className="hidden" onChange={onImportFile} />
+        <div className="flex gap-2">
+          <button type="button" onClick={exportNow} className="flex-1 rounded-lg bg-accent-600 px-2 py-2 text-xs font-medium text-white hover:bg-accent-700">Exporter</button>
+          <button type="button" onClick={() => importRef.current && importRef.current.click()} className="flex-1 rounded-lg border border-slate-200 px-2 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">Importer</button>
+        </div>
+      </div>
+
       {showModal && (
         <ProjectModal
           onClose={() => setShowModal(false)}
@@ -738,6 +778,10 @@ function Layout({ route, navigate, children }) {
   const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   useKeyboardShortcuts(navigate);
+
+  if (route.name === 'menu') {
+    return <div className="h-screen w-full overflow-hidden">{children}</div>;
+  }
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-slate-50 dark:bg-slate-950">
@@ -756,6 +800,7 @@ function Layout({ route, navigate, children }) {
 
       <div className="flex flex-1 flex-col overflow-hidden">
         <header className="flex items-center justify-between gap-4 border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900 md:px-6">
+          <button onClick={() => navigate('menu')} title="Menu" className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">⌂</button>
           <button onClick={() => setMobileOpen(true)} className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 md:hidden">☰</button>
           <SearchBar onNavigateSearch={() => navigate('search')} />
           <button onClick={toggleTheme} title="Basculer le thème" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">

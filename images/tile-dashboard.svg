@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#06102a"/><stop offset="1" stop-color="#0a1a4a"/></linearGradient>
+    <radialGradient id="glow" cx="50%" cy="80%" r="70%"><stop offset="0" stop-color="#4f46e5" stop-opacity=".55"/><stop offset="1" stop-color="#020617" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#sky)"/>
+  <rect width="640" height="480" fill="url(#glow)"/>
+  <ellipse cx="320" cy="460" rx="280" ry="50" fill="#0f172a"/>
+  <path d="M80 430 Q320 360 560 430" stroke="#22c55e" stroke-width="8" fill="none" opacity=".5"/>
+  <rect x="210" y="90" width="220" height="280" rx="18" fill="#0f172a" stroke="#6366f1" stroke-width="3"/>
+  <rect x="228" y="112" width="184" height="110" rx="8" fill="#1e1b4b"/>
+  <circle cx="320" cy="167" r="28" fill="#6366f1"/>
+  <rect x="292" y="198" width="56" height="8" rx="4" fill="#a5b4fc"/>
+  <rect x="240" y="240" width="160" height="10" rx="5" fill="#334155"/>
+  <rect x="240" y="262" width="120" height="10" rx="5" fill="#334155"/>
+  <rect x="240" y="284" width="140" height="10" rx="5" fill="#334155"/>
+  <rect x="240" y="320" width="70" height="22" rx="6" fill="#4f46e5"/>
+  <rect x="320" y="320" width="70" height="22" rx="6" fill="#1e293b" stroke="#6366f1"/>
+</svg>

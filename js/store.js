@@ -154,7 +154,19 @@ function taskflowReducer(state, action) {
       };
     }
     case 'IMPORT_DATA': {
-      return { ...action.payload };
+      const incoming = action.payload || {};
+      const projects = Array.isArray(incoming.projects) ? incoming.projects : [];
+      const tasks = Array.isArray(incoming.tasks) ? incoming.tasks : [];
+      if (incoming.merge) {
+        const projectIds = new Set(state.projects.map((p) => p.id));
+        const taskIds = new Set(state.tasks.map((t) => t.id));
+        return {
+          ...state,
+          projects: [...state.projects, ...projects.filter((p) => p && p.id && !projectIds.has(p.id))],
+          tasks: [...state.tasks, ...tasks.filter((t) => t && t.id && !taskIds.has(t.id))],
+        };
+      }
+      return { projects, tasks };
     }
     case 'RESET_DATA': {
       return seedData();
@@ -200,7 +212,7 @@ function TaskStoreProvider({ children }) {
     toggleCollapse: (id) => dispatch({ type: 'TOGGLE_COLLAPSE', payload: { id } }),
     indentTask: (id) => dispatch({ type: 'INDENT_TASK', payload: { id } }),
     outdentTask: (id) => dispatch({ type: 'OUTDENT_TASK', payload: { id } }),
-    importData: (data) => dispatch({ type: 'IMPORT_DATA', payload: data }),
+    importData: (data, merge) => dispatch({ type: 'IMPORT_DATA', payload: { ...data, merge: !!merge } }),
     resetData: () => {
       clearStoredData();
       dispatch({ type: 'RESET_DATA' });

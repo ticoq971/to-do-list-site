@@ -49,6 +49,57 @@ html.dark body {
 .progress-bar-fill { transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1); }
 
 /* Loading fallback shown until React mounts, then hidden by app.js */
+.game-menu {
+  min-height: 100%;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(99, 102, 241, 0.35), transparent 60%),
+    linear-gradient(180deg, #020617 0%, #0f172a 45%, #020617 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+.game-menu-inner { width: min(1100px, 100%); }
+.game-title {
+  text-align: center;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #e2e8f0;
+  text-shadow: 0 0 24px rgba(99, 102, 241, 0.8), 0 4px 0 #312e81;
+  margin-bottom: 28px;
+}
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.game-tile {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid #6366f1;
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.45), inset 0 0 0 1px rgba(165, 180, 252, 0.3);
+  padding: 0;
+  cursor: pointer;
+  background: #020617;
+}
+.game-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.game-tile span {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 12px 8px 14px;
+  background: linear-gradient(transparent, rgba(2, 6, 23, 0.92));
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+.game-tile:hover { transform: translateY(-3px); box-shadow: 0 0 28px rgba(129, 140, 248, 0.75); }
+@media (max-width: 900px) { .game-grid { grid-template-columns: repeat(2, 1fr); } }
+
 #boot-loading {
   position: fixed;
   inset: 0;

@@ -12,12 +12,12 @@ const { useState: useAppState, useEffect: useAppEffect } = React;
 
 function parseHash() {
   let hash = window.location.hash.replace(/^#\/?/, '');
-  if (!hash) return { name: 'dashboard', params: {} };
+  if (!hash) return { name: 'menu', params: {} };
   const parts = hash.split('/').filter(Boolean);
   if (parts[0] === 'project' && parts[1]) return { name: 'project', params: { projectId: parts[1] } };
-  const known = ['dashboard', 'today', 'upcoming', 'projects', 'completed', 'settings', 'search'];
+  const known = ['menu', 'dashboard', 'today', 'upcoming', 'projects', 'completed', 'settings', 'search'];
   if (known.includes(parts[0])) return { name: parts[0], params: {} };
-  return { name: 'dashboard', params: {} };
+  return { name: 'menu', params: {} };
 }
 
 function useHashRoute() {
@@ -34,7 +34,7 @@ function useHashRoute() {
   const navigate = (name, params) => {
     if (name === 'project' && params && params.projectId) {
       window.location.hash = `#/project/${params.projectId}`;
-    } else if (name === 'dashboard') {
+    } else if (name === 'menu' || name === 'home') {
       window.location.hash = '#/';
     } else {
       window.location.hash = `#/${name}`;
@@ -72,8 +72,11 @@ function App() {
     case 'search':
       page = <SearchPage />;
       break;
-    default:
+    case 'dashboard':
       page = <DashboardPage navigate={navigate} />;
+      break;
+    default:
+      page = <MenuPage navigate={navigate} />;
   }
 
   return (
