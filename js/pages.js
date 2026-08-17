@@ -442,40 +442,6 @@ function SettingsPage() {
   );
 }
 
-function MenuPage({ navigate }) {
-  const tiles = [
-    { to: 'dashboard', label: 'TABLEAU DE BORD', img: 'images/tile-dashboard.svg' },
-    { to: 'today', label: "AUJOURD'HUI", img: 'images/tile-today.svg' },
-    { to: 'upcoming', label: 'À VENIR', img: 'images/tile-upcoming.svg' },
-    { to: 'projects', label: 'PROJETS', img: 'images/tile-projects.svg' },
-    { to: 'search', label: 'RECHERCHE', img: 'images/tile-search.svg' },
-    { to: 'completed', label: 'TERMINÉES', img: 'images/tile-done.svg' },
-    { to: 'settings', label: 'PARAMÈTRES', img: 'images/tile-settings.svg' },
-    { to: 'today', extra: 'add', label: 'NOUVELLE TÂCHE', img: 'images/tile-add.svg' },
-  ];
-
-  return (
-    <div className="game-menu">
-      <div className="game-menu-inner">
-        <h1 className="game-title">TASKFLOW</h1>
-        <div className="game-grid">
-          {tiles.map((tile) => (
-            <button
-              key={tile.label}
-              type="button"
-              className="game-tile"
-              onClick={() => navigate(tile.to)}
-            >
-              <img src={tile.img} alt="" />
-              <span>{tile.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function ShortcutRow({ keys, desc }) {
   return (
     <li className="flex items-center gap-2">
